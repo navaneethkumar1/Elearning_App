@@ -12,8 +12,8 @@ export default function Login() {
         <Image style={styles.loginImage} source={require('../../assets/Images/login.jpeg')}/>
         </View>
         <View style={styles.container}>
-      <Text style={styles.welcometext}>Welcome to <Text style={{color:Colors.red}}>EduBox</Text></Text>
-      <Text style={{textAlign:'center',fontSize:20,marginTop:250,color:Colors.grey}}>Your Coding Adventure Starts Here</Text>
+      <Text style={styles.welcometext}>Welcome to <Text style={{color:Colors.Primary}}>EduBox</Text></Text>
+      <Text style={styles.subtitle}>Your Coding Adventure Starts Here</Text>
       <TouchableOpacity style={styles.Button}>
       <Ionicons name="logo-google" size={24} color="white" style={{marginRight:10}} />
         <Text style={{color:Colors.white}}>Signin with Google</Text>
@@ -26,14 +26,15 @@ export default function Login() {
 const styles = StyleSheet.create({
     loginImage:{
         width:width,
-        height:height*0.45,
+        height:height*0.5,
         resizeMode: 'cover',
+        marginTop:-80,
     },
     container:{
-paddingTop:50,
-marginTop:-38,
+paddingTop:30,
+marginTop:-50,
 backgroundColor:'#fff',
-borderTopRightRadius:35,
+borderTopRightRadius:30,
 borderTopLeftRadius:30
     },
   welcometext:{
@@ -43,16 +44,24 @@ borderTopLeftRadius:30
   },
   Button:{
     backgroundColor:Colors.Primary,
-    padding:10,
+    padding:15,
     margin:30,
     display:'flex',
     flexDirection:'row',
     justifyContent:'center',
     alignItems:'center',
-    borderRadius:10
+    borderRadius:16,
+  },
+  subtitle:{
+    textAlign: 'center',
+    fontSize: 20,
+    marginTop: 20,
+    marginBottom:130,
+    color: Colors.grey,
   },
   create:{
     textAlign:'center',
-    fontSize:20
+    fontSize:18,
+    color:Colors.Primary
   }
 })
