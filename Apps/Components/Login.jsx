@@ -2,10 +2,28 @@ import { View, Text, Dimensions, Button, TouchableOpacity } from 'react-native'
 import {Image} from 'react-native'
 import React from 'react'
 import { StyleSheet } from 'react-native'
-import Colors from '../Color/Colors';
+import Colors from '../Utils/Colors';
 const {width,height}=Dimensions.get('window');
 import { Ionicons } from '@expo/vector-icons';//google icon
+import { client } from '../Utils/KingConf';
+import * as WebBrowser from 'expo-web-browser';
+
 export default function Login() {
+
+  const handleSignUp = async () => {
+    const token = await client.register();
+    if (token) {
+      console.log("user authenticated");
+    }
+  };
+  
+  const handleSignIn = async () => {
+    const token = await client.login();
+    if (token) {
+    console.log("user authenticated");
+    }
+  };
+
   return (
     <View>
         <View >
@@ -14,11 +32,14 @@ export default function Login() {
         <View style={styles.container}>
       <Text style={styles.welcometext}>Welcome to <Text style={{color:Colors.Primary}}>EduBox</Text></Text>
       <Text style={styles.subtitle}>Your Coding Adventure Starts Here</Text>
-      <TouchableOpacity style={styles.Button}>
+
+      <TouchableOpacity onPress={handleSignIn} style={styles.Button}>
       <Ionicons name="logo-google" size={24} color="white" style={{marginRight:10}} />
         <Text style={{color:Colors.white}}>Signin with Google</Text>
         </TouchableOpacity>
-        <TouchableOpacity><Text style={styles.create}>Create New Account</Text></TouchableOpacity>
+        <TouchableOpacity onPress={handleSignUp}>
+            <Text style={styles.create}>Create New Account</Text>
+            </TouchableOpacity>
       </View>
     </View>
   )
@@ -53,15 +74,15 @@ borderTopLeftRadius:30
     borderRadius:16,
   },
   subtitle:{
-    textAlign: 'center',
+    textAlign:'center',
     fontSize: 20,
     marginTop: 20,
-    marginBottom:130,
+    marginBottom:110,
     color: Colors.grey,
   },
   create:{
     textAlign:'center',
     fontSize:18,
-    color:Colors.Primary
+    color:Colors.Primary,
   }
 })

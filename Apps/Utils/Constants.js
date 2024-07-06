@@ -1,0 +1,6 @@
+export default{
+KINDE_ISSUER_URL:"https://shadowracerbox.kinde.com",
+KINDE_POST_CALLBACK_URL:"exp://192.168.1.37:8081",
+KINDE_POST_LOGOUT_REDIRECT_URL:"exp://192.168.1.37:8081",
+KINDE_CLIENT_ID:"1b1c24ebd5fc42668b1027808bd5861e"
+}
