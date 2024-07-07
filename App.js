@@ -4,7 +4,11 @@ import Login from './Apps/Components/Login';
 import { ClerkProvider, SignedIn, SignedOut } from '@clerk/clerk-expo';
 import { NavigationContainer } from '@react-navigation/native';
 import Tabnavigations from './Apps/Navigations/Tabnavigations';
+import { useFonts } from 'expo-font'; //fontss
 export default function App() {
+  const [loaded, error] = useFonts({
+    'outfit': require('./assets/Fonts/Outfit-Regular.ttf'),//fonts 
+  });
   return (
   
       <ClerkProvider publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY}>
