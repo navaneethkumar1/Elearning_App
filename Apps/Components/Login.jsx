@@ -4,25 +4,30 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 import Colors from '../Utils/Colors';
 const {width,height}=Dimensions.get('window');
-import { Ionicons } from '@expo/vector-icons';//google icon
-import { client } from '../Utils/KingConf';
+import { Ionicons } from '@expo/vector-icons';4//google icon
 import * as WebBrowser from 'expo-web-browser';
-
+import UseWarmUpBrowser from '../../Hooks/UseWarmUpBrowser';
+import { useOAuth } from '@clerk/clerk-expo';
 export default function Login() {
-
-  const handleSignUp = async () => {
-    const token = await client.register();
-    if (token) {
-      console.log("user authenticated");
-    }
-  };
+  UseWarmUpBrowser();
   
-  const handleSignIn = async () => {
-    const token = await client.login();
-    if (token) {
-    console.log("user authenticated");
+  const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
+
+  const onPress = React.useCallback(async () => {
+    try {
+      const { createdSessionId, signIn, signUp, setActive } =
+        await startOAuthFlow();
+
+      if (createdSessionId) {
+        setActive({ session: createdSessionId });
+      } else {
+        // Use signIn or signUp for next steps such as MFA
+      }
+    } catch (err) {
+      console.error("OAuth error", err);
     }
-  };
+  }, []);
+
 
   return (
     <View>
@@ -33,11 +38,11 @@ export default function Login() {
       <Text style={styles.welcometext}>Welcome to <Text style={{color:Colors.Primary}}>EduBox</Text></Text>
       <Text style={styles.subtitle}>Your Coding Adventure Starts Here</Text>
 
-      <TouchableOpacity onPress={handleSignIn} style={styles.Button}>
+      <TouchableOpacity onPress={onPress} style={styles.Button}>
       <Ionicons name="logo-google" size={24} color="white" style={{marginRight:10}} />
         <Text style={{color:Colors.white}}>Signin with Google</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleSignUp}>
+        <TouchableOpacity onPress={onPress}>
             <Text style={styles.create}>Create New Account</Text>
             </TouchableOpacity>
       </View>
