@@ -13,14 +13,14 @@ export default function Header() {
        <Image source={{uri:user?.imageUrl}} style={{width:45,height:45, borderRadius:99}}/>
 
        <View>
-        <Text style={{fontSize:18}}>welcome</Text>
-     <Text style={{fontSize:20, fontFamily:'outfit-medium',color:Colors.Primary}}>{user?.fullName}</Text>
+        <Text style={{fontSize:18,fontFamily:'outfit'}}>welcome,</Text>
+     <Text style={{fontSize:20, fontFamily:'outfit-bold',color:Colors.Primary}}>{user?.fullName}</Text>
        </View>
       </View>
     </View>
     <View style={styles.input}>
     <Ionicons name="search" size={24} color={Colors.grey} />
-        <TextInput placeholder='search'/>
+        <TextInput placeholder='search' style={{fontFamily:'outfit',width:'100%'}}/>
     </View>
     </>
 

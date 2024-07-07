@@ -8,6 +8,8 @@ import { useFonts } from 'expo-font'; //fontss
 export default function App() {
   const [loaded, error] = useFonts({
     'outfit': require('./assets/Fonts/Outfit-Regular.ttf'),//fonts 
+    'outfit-medium': require('./assets/Fonts/Outfit-Medium.ttf'),//fonts 
+    'outfit': require('./assets/Fonts/Outfit-Bold.ttf'),//fonts 
   });
   return (
   
