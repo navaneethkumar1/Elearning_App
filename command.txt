@@ -1,2 +1,2 @@
 //npx expo install expo-font font 
-//
+// npm add graphql-request graphql // graphql request search this in google
