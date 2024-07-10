@@ -21,7 +21,7 @@ export default function ProfileScreen() {
     <View>
       <View style={styles.userinfo}>
         <Image source={{ uri:user?.imageUrl}} style={{width:90,height:90,borderRadius:99}} />
-        <Text style={{fontSize:30,alignItems:'center'}}>{user.fullName}</Text>
+        <Text style={{fontSize:35}}>{user.fullName}</Text>
         <Text style={{fontSize:20}}>{user?.primaryEmailAddress.emailAddress}</Text>
       </View>
       <TouchableOpacity onPress={handleLogout}style={styles.logout_btn}>
@@ -37,7 +37,7 @@ padding:18,
 margin:30,
 borderRadius:10,
 alignItems:'center',
-marginTop:500
+marginTop:520
 },
 userinfo:{
   marginTop:30,
