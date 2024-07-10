@@ -3,6 +3,7 @@ import React from 'react'
 import Colors from '../Utils/Colors'
 import { useNavigation } from '@react-navigation/native';
 import { useClerk, useUser } from '@clerk/clerk-expo';
+import { Ionicons } from '@expo/vector-icons';
 export default function ProfileScreen() {
     const navigation = useNavigation();
     const { signOut } = useClerk();
@@ -25,7 +26,8 @@ export default function ProfileScreen() {
         <Text style={{fontSize:20}}>{user?.primaryEmailAddress.emailAddress}</Text>
       </View>
       <TouchableOpacity onPress={handleLogout}style={styles.logout_btn}>
-        <Text style={{color:Colors.white}}>Logout</Text>
+      <Ionicons name="log-out-outline" size={30} color="white" />
+        <Text style={{color:Colors.white,fontSize:20}}>Logout</Text>
         </TouchableOpacity>
     </View>
   )
@@ -33,11 +35,16 @@ export default function ProfileScreen() {
 const styles=StyleSheet.create({
 logout_btn:{
 backgroundColor:Colors.Primary,
-padding:18,
-margin:30,
+padding:13,
+margin:20,
 borderRadius:10,
+marginTop:520,
+display:'flex',
+flexDirection:'row',
+gap:10,
 alignItems:'center',
-marginTop:520
+justifyContent:'center'
+
 },
 userinfo:{
   marginTop:30,
