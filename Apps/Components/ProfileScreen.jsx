@@ -108,13 +108,9 @@ export default function ProfileScreen() {
                 </View>
             </LinearGradient>
             <View style={styles.userinfo}>
-                <View style={styles.profileInfo}>
-                    <Image source={{ uri: user?.imageUrl }} style={styles.userImage} />
-                    <View style={styles.userInfo}>
-                        <Text style={styles.fullName}>{user.fullName}</Text>
-                        <Text style={styles.email}>{user?.primaryEmailAddress.emailAddress}</Text>
-                    </View>
-                </View>
+                <Image source={{ uri: user?.imageUrl }} style={styles.userImage} />
+                <Text style={styles.fullName}>{user.fullName}</Text>
+                <Text style={styles.email}>{user?.primaryEmailAddress.emailAddress}</Text>
             </View>
             <TouchableOpacity onPress={handleLogout} style={styles.logout_btn}>
                 <Ionicons name="log-out-outline" size={30} color="white" />
@@ -130,7 +126,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     heading: {
-        paddingTop: 50,
+        paddingTop: 28,
         paddingBottom: 20,
         paddingHorizontal: 20,
     },
@@ -144,38 +140,31 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     userinfo: {
-        paddingHorizontal: 20,
-        marginTop: 20,
-    },
-    profileInfo: {
-        flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 20,
-        padding: 10,
-        backgroundColor: '#f0f0f0',
-        borderRadius: 10,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
+        marginTop: 20,
+        paddingHorizontal: 20,
     },
     userImage: {
         width: 90,
         height: 90,
-        borderRadius: 45,
-    },
-    userInfo: {
-        marginLeft: 20,
+        borderRadius: 50,
+        borderWidth: 4,
+        borderColor: Colors.Primary,
+        marginBottom: 10,
+        marginTop:15
     },
     fullName: {
-        fontSize: 24,
+        fontSize: 30,
         fontWeight: 'bold',
-        color: Colors.Primary,
+        color:'#333333',
+        marginTop:15,
     },
     email: {
-        fontSize: 16,
+      marginTop:15,
+        fontSize: 20,
         color: '#666',
+        textAlign: 'center',
+        marginBottom: 20,
     },
     logout_btn: {
         flexDirection: 'row',
