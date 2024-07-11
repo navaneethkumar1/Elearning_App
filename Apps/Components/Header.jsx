@@ -45,7 +45,8 @@ const styles=StyleSheet.create(
       heading:{
         marginTop:24,
         padding:20,
-        backgroundColor:'#83B4FF'
-      }
+        backgroundColor:'white'
+      },
+  
     }
 )
