@@ -20,6 +20,9 @@ export default function ProfileScreen() {
 
   return (
     <View>
+      <View style={styles.head}>
+        <Text>EduBox</Text>
+      </View>
       <View style={styles.userinfo}>
         <Image source={{ uri:user?.imageUrl}} style={{width:90,height:90,borderRadius:99}} />
         <Text style={{fontSize:35}}>{user.fullName}</Text>
@@ -53,5 +56,10 @@ userinfo:{
   display:'flex',
   flexDirection:'column',
   alignItems:'center'
+},
+head:{
+  backgroundColor:Colors.Primary,
+  marginTop:24,
+  padding:30
 }
 })

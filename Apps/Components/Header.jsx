@@ -8,12 +8,12 @@ export default function Header() {
     const {user}=useUser();
   return (
     <>
-    <View style={{marginTop:25,padding:20}}>
+    <View style={styles.heading}>
      <View style={{display:'flex',flexDirection:'row',alignItems:'center',gap:10}}>
        <Image source={{uri:user?.imageUrl}} style={{width:45,height:45, borderRadius:99}}/>
 
-       <View>
-        <Text style={{fontSize:18,fontFamily:'outfit'}}>welcome,</Text>
+       <View >
+        <Text style={{fontSize:18,fontFamily:'outfit'}}>welcome To EduBox,</Text>
      <Text style={{fontSize:20, fontFamily:'outfit-bold',color:Colors.Primary}}>{user?.fullName}</Text>
        </View>
       </View>
@@ -41,6 +41,11 @@ const styles=StyleSheet.create(
            borderWidth:0.45,
            borderColor:Colors.Primary,
            margin:10
+      },
+      heading:{
+        marginTop:24,
+        padding:20,
+        backgroundColor:'#83B4FF'
       }
     }
 )
