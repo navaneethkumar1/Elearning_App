@@ -29,6 +29,12 @@ export default function Tabnavigations() {
             )
         }} name='MyCourses' component={MyCoursesScreen}/>
 
+<Tab.Screen options={{tabBarIcon:(color,size)=>(  <Ionicons name="book" size={24} color={Colors.Primary}/>
+),
+        tabBarLabel:()=>(
+            <Text style={{color:Colors.Primary}}>Quiz</Text>
+        )
+            }}name='quiz' component={Quiz}/>
             <Tab.Screen options={{tabBarIcon:(color,size)=>(
                 <Ionicons name="person" size={24} color={Colors.Primary}/>
             ),
