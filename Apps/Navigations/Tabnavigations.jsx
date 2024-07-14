@@ -2,7 +2,8 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import HomeScreen  from '../Components/HomeScreen';
 import ProfileScreen from '../Components/ProfileScreen';
-import MyCoursesScreen from '../Components/MyCourses'
+import MyCoursesScreen from '../Components/MyCourses';
+import Quiz from '../Components/Quiz';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Colors from '../Utils/Colors';
 
