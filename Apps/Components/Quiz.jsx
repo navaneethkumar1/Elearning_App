@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, ScrollView, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import axios from 'axios';
 
-const GEMINI_API_KEY = "AIzaSyBbL6D2BCdXnSDIM9wBlHSyHrumaH0Zqp4"; // Replace with your actual API key
+const GEMINI_API_KEY = "YOUR_API_KEY"; // Replace with your actual API key
 
 const ChatScreen = () => {
   const [messages, setMessages] = useState([]);
@@ -11,8 +11,6 @@ const ChatScreen = () => {
   const [score, setScore] = useState(0);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [inputText, setInputText] = useState('');
-  const [currentQuestion, setCurrentQuestion] = useState(null);
-  const [currentOptions, setCurrentOptions] = useState([]);
   const [correctAnswer, setCorrectAnswer] = useState('');
 
   useEffect(() => {
@@ -50,13 +48,15 @@ const ChatScreen = () => {
             console.log('Question:', questionPart);
             console.log('Options:', optionsPart);
 
-            const options = optionsPart.split('\n').map(option => option.trim());
+            const options = optionsPart.split('\n').map(option => option.trim()).filter(option => !option.startsWith('**Answer:**'));
             console.log('Parsed Options:', options);
 
             if (questionPart && options.length > 0) {
-              setMessages(prevMessages => [...prevMessages, { text: questionPart, isBot: true }]);
-              setCurrentQuestion(questionPart);
-              setCurrentOptions(options);
+              setMessages(prevMessages => [
+                ...prevMessages,
+                { text: questionPart, isBot: true, isQuestion: true },
+                ...options.map((option, index) => ({ text: `${index + 1}. ${option}`, isBot: true, isOption: true }))
+              ]);
               setCorrectAnswer(options[0].charAt(0).toLowerCase()); // Assuming the correct answer is the first option's first character
             } else {
               console.error('Invalid response format: missing question or options');
@@ -103,19 +103,27 @@ const ChatScreen = () => {
   };
 
   return (
-    <ScrollView>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <View style={styles.container}>
-        {messages.map((message, index) => (
-          <View key={index} style={styles.messageContainer}>
-            <Text style={message.isBot ? styles.botText : styles.userText}>
-              {message.text}
-            </Text>
-          </View>
-        ))}
+        <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
+          {messages.map((message, index) => (
+            <View key={index} style={message.isQuestion ? styles.questionContainer : styles.messageContainer}>
+              <Text style={message.isBot ? styles.botText : styles.userText}>
+                {message.text}
+              </Text>
+            </View>
+          ))}
 
-        {!quizCompleted && currentQuestion && (
+          {quizCompleted && (
+            <View style={styles.quizCompletedContainer}>
+              <Text style={styles.resultText}>{`Quiz completed! Your score is ${score}/10.`}</Text>
+              <Button title="Retry Quiz" onPress={retryQuiz} />
+            </View>
+          )}
+        </ScrollView>
+
+        {!quizCompleted && (
           <View style={styles.inputContainer}>
-            <Text style={styles.questionText}>{currentQuestion}</Text>
             <TextInput
               style={styles.input}
               value={inputText}
@@ -130,15 +138,8 @@ const ChatScreen = () => {
             />
           </View>
         )}
-
-        {quizCompleted && (
-          <View style={styles.quizCompletedContainer}>
-            <Text style={styles.resultText}>{`Quiz completed! Your score is ${score}/10.`}</Text>
-            <Button title="Retry Quiz" onPress={retryQuiz} />
-          </View>
-        )}
       </View>
-    </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -153,6 +154,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#eee',
     borderRadius: 8,
   },
+  questionContainer: {
+    marginVertical: 10,
+    padding: 10,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 8,
+  },
   botText: {
     fontSize: 16,
     color: 'green',
@@ -162,21 +169,23 @@ const styles = StyleSheet.create({
     color: 'blue',
   },
   inputContainer: {
-    flex: 1,
-    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 10,
+    backgroundColor: '#fff',
+    borderTopWidth: 1,
+    borderColor: '#ccc',
+    flexDirection: 'row',
     alignItems: 'center',
   },
-  questionText: {
-    fontSize: 18,
-    marginBottom: 10,
-    textAlign: 'center',
-  },
   input: {
-    width: '80%',
+    flex: 1,
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
-    marginBottom: 10,
+    marginRight: 10,
     paddingHorizontal: 10,
   },
   resultText: {
