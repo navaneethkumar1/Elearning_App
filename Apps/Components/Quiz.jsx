@@ -78,14 +78,13 @@ const ChatScreen = () => {
     }
   };
 
-  const handleSubmitted = (text) => {
-    setMessages(prevMessages => [...prevMessages, { text, isBot: false }]);
-    setInputText('');
-    setQuestionCount(prevCount => prevCount + 1);
-
-    if (text.trim().toLowerCase() === correctAnswer.toLowerCase()) {
+  const handleSubmitted = () => {
+    if (inputText.trim().toLowerCase() === correctAnswer.toLowerCase()) {
       setScore(prevScore => prevScore + 1);
     }
+    setMessages(prevMessages => [...prevMessages, { text: inputText, isBot: false }]);
+    setInputText('');
+    setQuestionCount(prevCount => prevCount + 1);
 
     if (questionCount < 9) {
       sendBotMessage('Generate a simple Python question with four options.');
@@ -113,19 +112,25 @@ const ChatScreen = () => {
             </Text>
           </View>
         ))}
+
         {!quizCompleted && currentQuestion && (
           <View style={styles.inputContainer}>
             <Text style={styles.questionText}>{currentQuestion}</Text>
-            {currentOptions.map((option, index) => (
-              <Button
-                key={index}
-                title={option}
-                onPress={() => handleSubmitted(option)}
-                disabled={isBotTyping}
-              />
-            ))}
+            <TextInput
+              style={styles.input}
+              value={inputText}
+              onChangeText={setInputText}
+              placeholder="Enter your answer"
+              editable={!isBotTyping}
+            />
+            <Button
+              title="Submit"
+              onPress={handleSubmitted}
+              disabled={isBotTyping}
+            />
           </View>
         )}
+
         {quizCompleted && (
           <View style={styles.quizCompletedContainer}>
             <Text style={styles.resultText}>{`Quiz completed! Your score is ${score}/10.`}</Text>
@@ -165,6 +170,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 10,
     textAlign: 'center',
+  },
+  input: {
+    width: '80%',
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 10,
   },
   resultText: {
     fontSize: 18,
