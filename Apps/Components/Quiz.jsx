@@ -47,34 +47,54 @@ const ChatScreen = () => {
             console.log('Question:', questionPart);
             console.log('Answer:', answerPart);
 
-            const options = combinedResponse.substring(combinedResponse.indexOf('```python') + 9, combinedResponse.lastIndexOf('```')).trim().split('\n').map(option => option.trim()).filter(option => option !== '');
+            const options = questionPart.split('\n').map(option => option.trim()).filter(option => option !== '');
             console.log('Parsed Options:', options);
 
-            if (options.length === 4) {
+            if (options.length > 0) {
               // Generate options in lowercase for case-insensitive comparison
               const formattedOptions = options.map(option => option.toLowerCase());
               setMessages(prevMessages => [
                 ...prevMessages,
-                { text: questionPart, isBot: true }, // Display the question
-                ...formattedOptions.map(option => ({ text: option, isBot: true })) // Display the options
+                { text: options[0], isBot: true }, // Display the question
+                ...formattedOptions.slice(1).map(option => ({ text: option, isBot: true })) // Display the options
               ]);
               setCorrectAnswer(answerPart.charAt(0).toLowerCase()); // Assuming the correct answer is the first option's first character
             } else {
-              console.error('Invalid response format: expected 4 options');
+              console.error('Invalid response format: missing question or options');
+              setMessages(prevMessages => [
+                ...prevMessages,
+                { text: 'Invalid response format: missing question or options', isBot: true, isError: true }
+              ]);
             }
           } else {
             console.error('Invalid response format: missing "**Answer:**" separator');
+            setMessages(prevMessages => [
+              ...prevMessages,
+              { text: 'Invalid response format: missing "**Answer:**" separator', isBot: true, isError: true }
+            ]);
           }
         } else {
           console.error('Invalid response format: missing content parts');
+          setMessages(prevMessages => [
+            ...prevMessages,
+            { text: 'Invalid response format: missing content parts', isBot: true, isError: true }
+          ]);
         }
       } else {
         console.error('Invalid response format: missing candidates');
+        setMessages(prevMessages => [
+          ...prevMessages,
+          { text: 'Invalid response format: missing candidates', isBot: true, isError: true }
+        ]);
       }
 
       setIsBotTyping(false);
     } catch (error) {
       console.error('Error fetching data:', error.response ? error.response.data : error.message);
+      setMessages(prevMessages => [
+        ...prevMessages,
+        { text: 'Error fetching data from the API', isBot: true, isError: true }
+      ]);
       setIsBotTyping(false);
     }
   };
@@ -91,7 +111,7 @@ const ChatScreen = () => {
     if (questionCount < 9) {
       setTimeout(() => {
         sendBotMessage('Generate a simple Python question with four options.');
-      }, 500); // Delay sending the next question
+      }, 1000); // 1 second delay before sending the next question
     } else {
       setQuizCompleted(true);
     }
@@ -105,7 +125,7 @@ const ChatScreen = () => {
     // Delay sending the bot message to ensure the UI reset first
     setTimeout(() => {
       sendBotMessage('Generate a simple Python question with four options.');
-    }, 500); // Adjust delay as needed
+    }, 800); // Adjust delay as needed
   };
 
   return (
