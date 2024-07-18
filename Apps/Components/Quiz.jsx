@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, ScrollView, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import axios from 'axios';
 
-const GEMINI_API_KEY = "YOUR_API_KEY"; // Replace with your actual API key
+const GEMINI_API_KEY = "AIzaSyBbL6D2BCdXnSDIM9wBlHSyHrumaH0Zqp4"; // Replace with your actual API key
 
 const ChatScreen = () => {
   const [messages, setMessages] = useState([]);
@@ -40,26 +40,27 @@ const ChatScreen = () => {
           const combinedResponse = content.parts[0].text;
           console.log('Combined response:', combinedResponse);
 
-          // Check if options are embedded directly in the response
           const splitIndex = combinedResponse.indexOf('**Answer:**');
           if (splitIndex !== -1) {
             const questionPart = combinedResponse.slice(0, splitIndex).trim();
-            const optionsPart = combinedResponse.slice(splitIndex + 11).trim(); // Skip '**Answer:**' (11 characters)
+            const answerPart = combinedResponse.slice(splitIndex + 11).trim(); // Skip '**Answer:**' (11 characters)
             console.log('Question:', questionPart);
-            console.log('Options:', optionsPart);
+            console.log('Answer:', answerPart);
 
-            const options = optionsPart.split('\n').map(option => option.trim()).filter(option => !option.startsWith('**Answer:**'));
+            const options = combinedResponse.substring(combinedResponse.indexOf('```python') + 9, combinedResponse.lastIndexOf('```')).trim().split('\n').map(option => option.trim()).filter(option => option !== '');
             console.log('Parsed Options:', options);
 
-            if (questionPart && options.length > 0) {
+            if (options.length === 4) {
+              // Generate options in lowercase for case-insensitive comparison
+              const formattedOptions = options.map(option => option.toLowerCase());
               setMessages(prevMessages => [
                 ...prevMessages,
-                { text: questionPart, isBot: true, isQuestion: true },
-                ...options.map((option, index) => ({ text: `${index + 1}. ${option}`, isBot: true, isOption: true }))
+                { text: questionPart, isBot: true }, // Display the question
+                ...formattedOptions.map(option => ({ text: option, isBot: true })) // Display the options
               ]);
-              setCorrectAnswer(options[0].charAt(0).toLowerCase()); // Assuming the correct answer is the first option's first character
+              setCorrectAnswer(answerPart.charAt(0).toLowerCase()); // Assuming the correct answer is the first option's first character
             } else {
-              console.error('Invalid response format: missing question or options');
+              console.error('Invalid response format: expected 4 options');
             }
           } else {
             console.error('Invalid response format: missing "**Answer:**" separator');
@@ -79,7 +80,8 @@ const ChatScreen = () => {
   };
 
   const handleSubmitted = () => {
-    if (inputText.trim().toLowerCase() === correctAnswer.toLowerCase()) {
+    const normalizedInput = inputText.trim().toLowerCase();
+    if (normalizedInput === correctAnswer.toLowerCase()) {
       setScore(prevScore => prevScore + 1);
     }
     setMessages(prevMessages => [...prevMessages, { text: inputText, isBot: false }]);
@@ -87,10 +89,11 @@ const ChatScreen = () => {
     setQuestionCount(prevCount => prevCount + 1);
 
     if (questionCount < 9) {
-      sendBotMessage('Generate a simple Python question with four options.');
+      setTimeout(() => {
+        sendBotMessage('Generate a simple Python question with four options.');
+      }, 500); // Delay sending the next question
     } else {
       setQuizCompleted(true);
-      setMessages(prevMessages => [...prevMessages, { text: `Quiz completed! Your score is ${score}/10.`, isBot: true }]);
     }
   };
 
@@ -99,7 +102,10 @@ const ChatScreen = () => {
     setQuestionCount(0);
     setScore(0);
     setQuizCompleted(false);
-    sendBotMessage('Generate a simple Python question with four options.');
+    // Delay sending the bot message to ensure the UI reset first
+    setTimeout(() => {
+      sendBotMessage('Generate a simple Python question with four options.');
+    }, 500); // Adjust delay as needed
   };
 
   return (
@@ -107,14 +113,15 @@ const ChatScreen = () => {
       <View style={styles.container}>
         <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
           {messages.map((message, index) => (
-            <View key={index} style={message.isQuestion ? styles.questionContainer : styles.messageContainer}>
+            <View key={index} style={styles.messageContainer}>
               <Text style={message.isBot ? styles.botText : styles.userText}>
                 {message.text}
               </Text>
             </View>
           ))}
 
-          {quizCompleted && (
+          {/* Display quiz completion message */}
+          {quizCompleted && messages.length > 0 && (
             <View style={styles.quizCompletedContainer}>
               <Text style={styles.resultText}>{`Quiz completed! Your score is ${score}/10.`}</Text>
               <Button title="Retry Quiz" onPress={retryQuiz} />
@@ -150,19 +157,13 @@ const styles = StyleSheet.create({
   },
   messageContainer: {
     marginVertical: 10,
-    padding: 10,
+    padding: 8,
     backgroundColor: '#eee',
     borderRadius: 8,
   },
-  questionContainer: {
-    marginVertical: 10,
-    padding: 10,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 8,
-  },
   botText: {
-    fontSize: 16,
-    color: 'green',
+    fontSize: 17,
+    color: 'black',
   },
   userText: {
     fontSize: 16,
