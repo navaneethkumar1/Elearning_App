@@ -1,13 +1,16 @@
+// LanguageSelectionScreen.js
+
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import PythonQuiz from '../QuizScreens/Pythonquiz'; // Assuming this is the correct import path
 
-const LanguageSelectionScreen = () => {
+const Quiz = () => {
   const navigation = useNavigation();
 
-  const handleLanguagePress = (language) => {
-    // Navigate to the next screen based on the selected language
-    navigation.navigate('NextScreen', { language });
+  const handleLanguagePress = () => {
+    // Navigate to the PythonQuiz screen
+    navigation.navigate('PythonQuiz');
   };
 
   return (
@@ -32,7 +35,7 @@ const LanguageSelectionScreen = () => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => handleLanguagePress('Python')}
+        onPress={() => handleLanguagePress('PythonQuiz')}
       >
         <Text style={styles.buttonText}>Python</Text>
       </TouchableOpacity>
@@ -62,7 +65,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '90%', // Adjust as needed for spacing
-    marginBottom: 45,
+    marginBottom: 20,
     paddingVertical: 20,
     backgroundColor: '#0C7DE4', // Blue background color
     borderRadius: 40,
@@ -76,4 +79,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LanguageSelectionScreen;
+export default Quiz;

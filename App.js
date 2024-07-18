@@ -5,6 +5,8 @@ import { ClerkProvider, SignedIn, SignedOut } from '@clerk/clerk-expo';
 import { NavigationContainer } from '@react-navigation/native';
 import Tabnavigations from './Apps/Navigations/Tabnavigations';
 import { useFonts } from 'expo-font'; //fontss
+import StackNavigation from './Apps/Navigations/Stacknavigation';
+
 export default function App() {
   const [loaded, error] = useFonts({
     'outfit': require('./assets/Fonts/Outfit-Regular.ttf'),//fonts 
@@ -17,6 +19,7 @@ export default function App() {
         {/* <SignedIn> */}
         <NavigationContainer>
           <Tabnavigations/>
+          <StackNavigation/>
         </NavigationContainer>
         {/* </SignedIn> */}
 
